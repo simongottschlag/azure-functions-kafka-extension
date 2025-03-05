@@ -30,10 +30,17 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build project
-        run: dotnet build --configuration Release
+        run: |
+          dotnet build src/Microsoft.Azure.WebJobs.Extensions.Kafka/Microsoft.Azure.WebJobs.Extensions.Kafka.csproj \
+            --configuration Release \
+            -p:IsLocalBuild=False
 
       - name: Create the package
-        run: dotnet pack --configuration Release
+        run: |
+          dotnet pack src/Microsoft.Azure.WebJobs.Extensions.Kafka/Microsoft.Azure.WebJobs.Extensions.Kafka.csproj \
+            --configuration Release \
+            --output ./artifacts \
+            --include-symbols
 
       - name: Publish the package to GitHub Packages
-        run: dotnet nuget push bin/Release/*.nupkg
+        run: dotnet nuget push ./artifacts/*.nupkg
