@@ -24,10 +24,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'  # use the .NET version you need
-          source-url: https://nuget.pkg.github.com/simongottschlag/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          dotnet-version: '8.x'
 
       - name: Build project
         run: |
@@ -43,4 +40,8 @@ jobs:
             --include-symbols
 
       - name: Publish the package to GitHub Packages
-        run: dotnet nuget push ./artifacts/*.nupkg
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }} \
+            --skip-duplicate
