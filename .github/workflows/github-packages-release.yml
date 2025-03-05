@@ -1,0 +1,39 @@
+name: Publish to GitHub Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Tag name to publish (e.g. 4.1.0)'
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # needed for pushing to GitHub Packages
+
+    steps:
+      - name: Check out the specified tag
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.release_tag }}
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'  # use the .NET version you need
+          source-url: https://nuget.pkg.github.com/simongottschlag/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      - name: Create the package
+        run: dotnet pack --configuration Release
+
+      - name: Publish the package to GitHub Packages
+        run: dotnet nuget push bin/Release/*.nupkg
