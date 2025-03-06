@@ -37,8 +37,7 @@ jobs:
           dotnet pack src/Microsoft.Azure.WebJobs.Extensions.Kafka/Microsoft.Azure.WebJobs.Extensions.Kafka.csproj \
             --configuration Release \
             --output ./artifacts \
-            --include-symbols \
-            -p:PackageId="SimonGottschlag.Azure.WebJobs.Extensions.Kafka"
+            --include-symbols
 
       - name: Publish the package to GitHub Packages
         run: |
