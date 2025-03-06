@@ -54,6 +54,10 @@
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
+    <None Include="SimonGottschlag.Azure.WebJobs.Extensions.Kafka.targets">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
