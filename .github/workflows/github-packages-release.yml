@@ -45,4 +45,10 @@ jobs:
           dotnet nuget push "./artifacts/*.nupkg" \
             --api-key ${{ secrets.GITHUB_TOKEN }} \
             --source https://nuget.pkg.github.com/${{ github.repository_owner }} \
+            --skip-duplicate \
+            --no-symbols
+            
+          dotnet nuget push "./artifacts/*.symbols.nupkg" \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }} \
             --skip-duplicate
